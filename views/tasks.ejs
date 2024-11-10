@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #0b0b02;
+            margin: 0;
+            padding: 0;
+            padding-top: 80px; /* Adjust padding to account for fixed navbar */
+        }
+
+        nav {
+            background-color: #fffff0;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h2 {
+            color:black;
+            margin: 0;
+            font-size: 25px;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 10px;
+            margin-right: 40px;
+        }
+
+        nav a {
+            color: #050300;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #cc5200;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fffff0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(11, 6, 0, 0.97);
+        }
+
+        h1 {
+            text-align: center;
+            color: rgb(21, 4, 4);
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff6600;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #cc5200;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li form {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        li a {
+            color: #ff6600;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+
+        li a:hover {
+            color: #cc5200;
+        }
+
+        .taskbox {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .taskbox h1 {
+            text-align: center;
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <h2>Welcome, <%= student.name %></h2>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/auth/logout">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Tasks</h1>
+        <form action="/tasks/add" method="POST">
+            <input type="text" name="title" placeholder="Task Title/Subject" required><br>
+            <textarea name="description" placeholder="Task Description" required></textarea><br>
+            <button type="submit">Add Task</button>
+        </form>
+    </div>
+
+    <div class="taskbox">
+        <h1>List of Tasks</h1>
+        <ul>
+            <% tasks.forEach(task => { %>
+                <li>
+                    <form action="/tasks/edit/<%= task._id %>" method="POST">
+                        <input type="text" name="title" value="<%= task.title %>" required>
+                        <textarea name="description" required><%= task.description %></textarea>
+                        <select name="status">
+                            <option value="pending" <%= task.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                            <option value="completed" <%= task.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                        </select>
+                        <button type="submit">Edit</button>
+                    </form>
+                    <a href="/tasks/delete/<%= task._id %>">Delete</a>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+</body>
+
+</html>

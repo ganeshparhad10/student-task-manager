@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tools</title>
+</head>
+<body>
+  <nav>
+    <h2>Welcome, <%= student.name %></h2>
+    <a href="/auth/logout">Logout</a>
+  </nav>
+  <h1>Tools</h1>
+  <section>
+    <h2>Resume Builder</h2>
+    <form action="/tools/resume" method="POST">
+      <input type="text" name="name" placeholder="Name" required><br>
+      <input type="text" name="email" placeholder="Email" required><br>
+      <textarea name="experience" placeholder="Experience" required></textarea><br>
+      <button type="submit">Generate Resume</button>
+    </form>
+  </section>
+  <section>
+    <h2>Text Editor</h2>
+    <textarea id="text-editor" rows="10" cols="50"></textarea>
+  </section>
+  <script>
+    // Simple text editor functionality
+    const textEditor = document.getElementById('text-editor');
+    textEditor.addEventListener('input', () => {
+      localStorage.setItem('textEditorContent', textEditor.value);
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      textEditor.value = localStorage.getItem('textEditorContent') || '';
+    });
+  </script>
+</body>
+</html>
